@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AnnotAIte - Upload & Configure</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>AnnotAIte</h1>
+      <p>Intelligent Image Annotation Powered by AI</p>
+    </div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Upload & Configure</h2>
+      <form action="/process_upload" method="post" enctype="multipart/form-data">
+        <!-- Upload Box -->
+        <label for="zip_file" class="upload-box">
+          <p>Drag & drop your ZIP file here <br><span>(or click to browse)</span></p>
+        </label>
+        <input type="file" name="zip_file" id="zip_file" class="upload-input" accept=".zip" required>
+        
+        <!-- Class Configuration -->
+        <div class="class-config">
+          <h3>Class Configuration</h3>
+          <div id="class-fields">
+            <div class="class-row">
+              <label>Class Name:</label>
+              <input type="text" name="class_name[]" placeholder="e.g. Bin" required>
+              <label>Class ID:</label>
+              <input type="number" name="class_id[]" placeholder="e.g. 0" required>
+              <label>Threshold:</label>
+              <input type="text" name="threshold[]" placeholder="0.75">
+            </div>
+          </div>
+          <button type="button" class="add-class-btn" onclick="addClass()">+ Add Another Class</button>
+        </div>
+        <button type="submit" class="submit-btn">Start Annotation</button>
+      </form>
+    </div>
+  </main>
+  <footer>
+    &copy; 2025 AnnotAIte. All rights reserved.
+  </footer>
+  
+  <script>
+    // Dynamic Class Row Addition
+    function addClass() {
+      const container = document.getElementById("class-fields");
+      const classRow = document.createElement("div");
+      classRow.classList.add("class-row");
+      classRow.innerHTML = `
+        <label>Class Name:</label>
+        <input type="text" name="class_name[]" placeholder="e.g. Bin" required>
+        <label>Class ID:</label>
+        <input type="number" name="class_id[]" placeholder="e.g. 0" required>
+        <label>Threshold:</label>
+        <input type="text" name="threshold[]" placeholder="0.75">
+      `;
+      container.appendChild(classRow);
+    }
+    
+    // Trigger file dialog when clicking on the upload box
+    const uploadBox = document.querySelector('.upload-box');
+    const fileInput = document.getElementById('zip_file');
+    uploadBox.addEventListener('click', () => fileInput.click());
+  </script>
+</body>
+</html>

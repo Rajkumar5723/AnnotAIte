@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AnnotAIte - Annotation Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>AnnotAIte</h1>
+      <p>Annotation Results</p>
+    </div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>All Done!</h2>
+      <div class="gallery">
+        {% if results %}
+          {% for r in results %}
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='../../output/annotated_images/' ~ r.img_file) }}" alt="{{ r.img_file }}">
+            <h3>{{ r.img_file }}</h3>
+            <ul class="annotations-list">
+              {% for ann in r.annotations %}
+              <li>{{ ann }}</li>
+              {% endfor %}
+            </ul>
+            <a href="{{ url_for('preview', img_file=r.img_file) }}" class="preview-link">Preview</a>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p>No results to display.</p>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+  <footer>
+    &copy; 2025 AnnotAIte. All rights reserved.
+  </footer>
+</body>
+</html>

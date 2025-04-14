@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Processing Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* (Basic styling—feel free to move this CSS to your shared style.css if desired) */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Roboto', sans-serif; background: #f0f2f5; color: #333; line-height: 1.5; padding: 20px; }
+    header { background: linear-gradient(90deg, #7b2ff7, #f107a3); color: #fff; padding: 40px 20px; text-align: center; border-radius: 0 0 25px 25px; margin-bottom: 30px; }
+    header h1 { font-weight: 700; margin-bottom: 10px; }
+    main { max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .progress-container { width: 100%; background: #e6e6e6; border-radius: 10px; overflow: hidden; height: 16px; margin-bottom: 30px; }
+    .progress { height: 100%; width: 0; background: linear-gradient(90deg, #7b2ff7, #f107a3); transition: width 0.4s ease; }
+    .processing-text { font-size: 1.05rem; color: #555; }
+    footer { text-align: center; margin-top: 30px; color: #999; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Upload & Configure</h1>
+    <p>Your file is being processed...</p>
+  </header>
+  <main>
+    <h2>Processing...</h2>
+    <div class="progress-container">
+      <div class="progress" id="progress-bar"></div>
+    </div>
+    <p class="processing-text" id="processing-text">Please wait while we process your images...</p>
+    
+    <!-- Hidden form to post actual parameters to /annotate -->
+    <form id="processForm" action="/annotate" method="post">
+      <input type="hidden" name="zip_path" value="{{ zip_path }}">
+      {% for name in class_names %}
+        <input type="hidden" name="class_name[]" value="{{ name }}">
+      {% endfor %}
+      {% for cid in class_ids %}
+        <input type="hidden" name="class_id[]" value="{{ cid }}">
+      {% endfor %}
+      {% for thresh in thresholds %}
+        <input type="hidden" name="threshold[]" value="{{ thresh }}">
+      {% endfor %}
+    </form>
+  </main>
+  <footer>
+    &copy; 2025 Your Name or Organization
+  </footer>
+  <script>
+    // Simulate progress bar
+    let progress = 0;
+    const progressBar = document.getElementById('progress-bar');
+    const processingText = document.getElementById('processing-text');
+    const interval = setInterval(() => {
+      progress += 10;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        processingText.innerText = "Processing complete! Redirecting...";
+        // Now submit the form to trigger annotation processing
+        document.getElementById('processForm').submit();
+      }
+      progressBar.style.width = progress + '%';
+    }, 400);
+  </script>
+</body>
+</html>

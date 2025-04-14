@@ -1,0 +1,8 @@
+Flask>=2.2.3
+opencv-python>=4.7.0.72
+numpy>=1.24.2
+torch>=2.0.0
+huggingface_hub>=0.16.4
+segment-anything>=1.0.0
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.20.9
